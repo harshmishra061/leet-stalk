@@ -15,6 +15,7 @@ import authRoutes from './routes/auth.js';
 import userRoutes from './routes/users.js';
 import leetcodeRoutes from './routes/leetcode.js';
 import friendRoutes from './routes/friends.js';
+import globalStatsRoutes from './routes/globalStats.js';
 import { passport, initializeGoogleStrategy } from './config/passport.js';
 
 const app = express();
@@ -116,6 +117,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/leetcode', leetcodeRoutes);
 app.use('/api/friends', friendRoutes);
+app.use('/api/global-stats', globalStatsRoutes);
 
 // Root endpoint
 app.get('/', (req, res) => {
