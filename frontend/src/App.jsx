@@ -11,6 +11,7 @@ import AuthCallback from './components/auth/AuthCallback';
 import Dashboard from './components/dashboard/Dashboard';
 import Friends from './components/friends/Friends';
 import ProgressBoard from './components/progressboard/ProgressBoard';
+import ComebackCalculator from './components/comeback/ComebackCalculator';
 import Settings from './components/settings/Settings';
 
 // Protected Route Component
@@ -105,6 +106,13 @@ const AppRoutes = () => {
         <ProtectedRoute>
           <Navigation>
             <ProgressBoard />
+          </Navigation>
+        </ProtectedRoute>
+      } />
+      <Route path="/comeback-calculator" element={
+        <ProtectedRoute>
+          <Navigation>
+            <ComebackCalculator />
           </Navigation>
         </ProtectedRoute>
       } />

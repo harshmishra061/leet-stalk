@@ -7,22 +7,29 @@ import {
   Target, 
   TrendingUp, 
   Calendar,
-  RefreshCw
+  RefreshCw,
+  Eye,
+  ThumbsUp,
+  ThumbsDown
 } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
-import { leetcodeAPI, usersAPI } from '../../utils/api';
+import { leetcodeAPI, usersAPI, globalStatsAPI } from '../../utils/api';
+import toast from 'react-hot-toast';
 
 const Dashboard = () => {
   const { user } = useAuth();
   const [leetcodeProfile, setLeetcodeProfile] = useState(null);
   const [leaderboard, setLeaderboard] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [globalStats, setGlobalStats] = useState({ visitors: 0, likes: 0, dislikes: 0 });
 
 
 
   useEffect(() => {
     // Fetch dashboard data on mount and when username changes
     fetchDashboardData();
+    // Increment visitor count and fetch global stats on page load
+    incrementVisitorCount();
   }, [user?.username]);
 
   useEffect(() => {
@@ -87,6 +94,37 @@ const Dashboard = () => {
       }
     } finally {
       setLoading(false);
+    }
+  };
+
+  const incrementVisitorCount = async () => {
+    try {
+      const response = await globalStatsAPI.incrementVisitor();
+      setGlobalStats(response.data);
+    } catch (error) {
+      console.error('Error incrementing visitor count:', error);
+    }
+  };
+
+  const handleGlobalLike = async () => {
+    try {
+      const response = await globalStatsAPI.incrementLike();
+      setGlobalStats(response.data);
+      toast.success('Liked! 👍');
+    } catch (error) {
+      console.error('Error incrementing like:', error);
+      toast.error('Failed to like');
+    }
+  };
+
+  const handleGlobalDislike = async () => {
+    try {
+      const response = await globalStatsAPI.incrementDislike();
+      setGlobalStats(response.data);
+      toast.success('Disliked! 👎');
+    } catch (error) {
+      console.error('Error incrementing dislike:', error);
+      toast.error('Failed to dislike');
     }
   };
 
@@ -258,8 +296,53 @@ const Dashboard = () => {
         </div>
       </div>
 
+      {/* Global Stats - Simple Layout */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {/* Visitor Count */}
+        <div className="p-4 bg-blue-50 rounded-lg flex items-center justify-between">
+          <div className="flex items-center">
+            <Eye className="h-6 w-6 text-blue-600 mr-3" />
+            <div>
+              <p className="text-sm text-gray-600">Total Visitors</p>
+              <p className="text-2xl font-bold text-gray-900">{globalStats.visitors}</p>
+            </div>
+          </div>
+        </div>
 
+        {/* Likes */}
+        <div className="p-4 bg-green-50 rounded-lg">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-gray-600 mb-1">Likes</p>
+              <p className="text-xl font-bold text-green-600">{globalStats.likes}</p>
+            </div>
+            <button
+              onClick={handleGlobalLike}
+              className="p-3 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors"
+              title="Like"
+            >
+              <ThumbsUp className="h-5 w-5" />
+            </button>
+          </div>
+        </div>
 
+        {/* Dislikes */}
+        <div className="p-4 bg-red-50 rounded-lg">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-gray-600 mb-1">Dislikes</p>
+              <p className="text-xl font-bold text-red-600">{globalStats.dislikes}</p>
+            </div>
+            <button
+              onClick={handleGlobalDislike}
+              className="p-3 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors"
+              title="Dislike"
+            >
+              <ThumbsDown className="h-5 w-5" />
+            </button>
+          </div>
+        </div>
+      </div>
 
     </div>
   );

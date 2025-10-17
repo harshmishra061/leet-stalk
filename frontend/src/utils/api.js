@@ -123,6 +123,12 @@ export const friendsAPI = {
   searchLeetCodeUser: (query) => api.get(`/friends/search?q=${encodeURIComponent(query)}`),
 };
 
-
+// Global Stats API
+export const globalStatsAPI = {
+  getStats: () => api.get('/global-stats'),
+  incrementVisitor: () => api.post('/global-stats/visitor'),
+  incrementLike: () => api.post('/global-stats/like'),
+  incrementDislike: () => api.post('/global-stats/dislike'),
+};
 
 export default api; 
