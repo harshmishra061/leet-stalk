@@ -9,7 +9,8 @@ import {
   Code, 
   Menu, 
   X,
-  Home
+  Home,
+  Calculator
 } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 
@@ -28,6 +29,7 @@ const Navigation = ({ children }) => {
     { name: 'Dashboard', href: '/dashboard', icon: Home },
     { name: 'Friends', href: '/friends', icon: Users },
     { name: 'Progress Board', href: '/progress-board', icon: Trophy },
+    { name: 'Comeback Calculator', href: '/comeback-calculator', icon: Calculator },
     { name: 'Settings', href: '/settings', icon: Settings },
   ];
 
@@ -119,6 +121,7 @@ const SidebarContent = ({ navigation, isActive, onClose }) => {
         <nav className="mt-8 flex-1 px-2 space-y-1">
           {navigation.map((item) => {
             const Icon = item.icon;
+            const isNewFeature = item.name === 'Comeback Calculator';
             return (
               <Link
                 key={item.name}
@@ -136,6 +139,11 @@ const SidebarContent = ({ navigation, isActive, onClose }) => {
                     : 'text-gray-500 group-hover:text-gray-700'
                 }`} />
                 <span className="truncate relative z-10">{item.name}</span>
+                {isNewFeature && (
+                  <span className="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-green-500 text-white">
+                    NEW
+                  </span>
+                )}
               </Link>
             );
           })}
