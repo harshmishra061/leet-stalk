@@ -279,6 +279,7 @@ const ComebackCalculator = () => {
                 onClick={() => setEasyPerDay(Math.max(0, easyPerDay - 1))}
                 className="w-10 h-10 flex items-center justify-center bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg font-bold text-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={easyPerDay <= 0}
+                aria-label="Decrease easy problems per day"
               >
                 −
               </button>
@@ -288,6 +289,7 @@ const ComebackCalculator = () => {
               <button
                 onClick={() => setEasyPerDay(easyPerDay + 1)}
                 className="w-10 h-10 flex items-center justify-center bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-bold text-lg transition-colors"
+                aria-label="Increase easy problems per day"
               >
                 +
               </button>
@@ -302,6 +304,7 @@ const ComebackCalculator = () => {
                 onClick={() => setMediumPerDay(Math.max(0, mediumPerDay - 1))}
                 className="w-10 h-10 flex items-center justify-center bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg font-bold text-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={mediumPerDay <= 0}
+                aria-label="Decrease medium problems per day"
               >
                 −
               </button>
@@ -311,6 +314,7 @@ const ComebackCalculator = () => {
               <button
                 onClick={() => setMediumPerDay(mediumPerDay + 1)}
                 className="w-10 h-10 flex items-center justify-center bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-bold text-lg transition-colors"
+                aria-label="Increase medium problems per day"
               >
                 +
               </button>
@@ -325,6 +329,7 @@ const ComebackCalculator = () => {
                 onClick={() => setHardPerDay(Math.max(0, hardPerDay - 1))}
                 className="w-10 h-10 flex items-center justify-center bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg font-bold text-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={hardPerDay <= 0}
+                aria-label="Decrease hard problems per day"
               >
                 −
               </button>
@@ -334,6 +339,7 @@ const ComebackCalculator = () => {
               <button
                 onClick={() => setHardPerDay(hardPerDay + 1)}
                 className="w-10 h-10 flex items-center justify-center bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-bold text-lg transition-colors"
+                aria-label="Increase hard problems per day"
               >
                 +
               </button>
