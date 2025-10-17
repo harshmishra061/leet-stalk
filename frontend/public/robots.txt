@@ -1,0 +1,13 @@
+# robots.txt for LeetStalk
+
+# Allow all crawlers
+User-agent: *
+Allow: /
+
+# Disallow specific paths (if any)
+# Disallow: /api/
+# Disallow: /admin/
+
+# Sitemap location (update with your actual domain)
+Sitemap: https://leet-stalk.vercel.app/sitemap.xml
+
