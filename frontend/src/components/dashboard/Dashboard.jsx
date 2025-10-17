@@ -320,6 +320,7 @@ const Dashboard = () => {
               onClick={handleGlobalLike}
               className="p-3 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors"
               title="Like"
+              aria-label="Like this dashboard"
             >
               <ThumbsUp className="h-5 w-5" />
             </button>
@@ -337,6 +338,7 @@ const Dashboard = () => {
               onClick={handleGlobalDislike}
               className="p-3 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors"
               title="Dislike"
+              aria-label="Dislike this dashboard"
             >
               <ThumbsDown className="h-5 w-5" />
             </button>

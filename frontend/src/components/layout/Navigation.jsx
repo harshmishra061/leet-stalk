@@ -49,6 +49,7 @@ const Navigation = ({ children }) => {
             <button
               className="flex items-center justify-center h-10 w-10 rounded-full bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-500"
               onClick={() => setSidebarOpen(false)}
+              aria-label="Close sidebar"
             >
               <X className="h-6 w-6 text-gray-600" />
             </button>
@@ -69,6 +70,7 @@ const Navigation = ({ children }) => {
           <button
             className="px-4 border-r border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-500 lg:hidden"
             onClick={() => setSidebarOpen(true)}
+            aria-label="Open sidebar menu"
           >
             <Menu className="h-6 w-6" />
           </button>
@@ -85,6 +87,7 @@ const Navigation = ({ children }) => {
                 onClick={handleLogout}
                 className="p-2 rounded-full text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500 transition-colors"
                 title="Logout"
+                aria-label="Logout from account"
               >
                 <LogOut className="h-5 w-5" />
               </button>
