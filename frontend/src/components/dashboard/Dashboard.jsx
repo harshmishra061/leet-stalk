@@ -116,7 +116,7 @@ const Dashboard = () => {
     try {
       const response = await globalStatsAPI.incrementLike();
       setGlobalStats(response.data);
-      toast.success('Liked! 👍');
+      toast.success('Thanks for the like! 👍');
     } catch (error) {
       console.error('Error incrementing like:', error);
       toast.error('Failed to like');
@@ -127,7 +127,7 @@ const Dashboard = () => {
     try {
       const response = await globalStatsAPI.incrementDislike();
       setGlobalStats(response.data);
-      toast.success('Disliked! 👎');
+      toast.success('Thanks for the feedback! 👎');
     } catch (error) {
       console.error('Error incrementing dislike:', error);
       toast.error('Failed to dislike');
@@ -318,6 +318,36 @@ const Dashboard = () => {
         </div>
       </div>
 
+      {/* Call to Action Section */}
+      <div className="mb-8">
+        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-6 border border-blue-200">
+          <div className="text-center">
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              Enjoying LeetStalk? 
+            </h3>
+            <p className="text-gray-600 mb-4">
+              Help us improve by sharing your feedback below, and connect with me on LinkedIn!
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <a
+                href="https://www.linkedin.com/in/harshmishra061"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+              >
+                <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                </svg>
+                Connect on LinkedIn
+              </a>
+              <p className="text-sm text-gray-500">
+                Built by Harsh Mishra
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Global Stats - Simple Layout */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {/* Visitor Count */}
@@ -341,7 +371,7 @@ const Dashboard = () => {
             <button
               onClick={handleGlobalLike}
               className="p-3 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors"
-              title="Like"
+              title="Like this dashboard"
               aria-label="Like this dashboard"
             >
               <ThumbsUp className="h-5 w-5" />
@@ -359,7 +389,7 @@ const Dashboard = () => {
             <button
               onClick={handleGlobalDislike}
               className="p-3 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors"
-              title="Dislike"
+              title="Dislike this dashboard"
               aria-label="Dislike this dashboard"
             >
               <ThumbsDown className="h-5 w-5" />
