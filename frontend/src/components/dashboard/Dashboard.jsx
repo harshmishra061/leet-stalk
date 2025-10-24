@@ -21,6 +21,7 @@ const Dashboard = () => {
   const [leetcodeProfile, setLeetcodeProfile] = useState(null);
   const [leaderboard, setLeaderboard] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [leaderboardLoading, setLeaderboardLoading] = useState(false);
   const [globalStats, setGlobalStats] = useState({ visitors: 0, likes: 0, dislikes: 0 });
 
 
@@ -28,6 +29,8 @@ const Dashboard = () => {
   useEffect(() => {
     // Fetch dashboard data on mount and when username changes
     fetchDashboardData();
+    // Load leaderboard separately to avoid blocking main dashboard
+    fetchLeaderboardData();
     // Increment visitor count and fetch global stats on page load
     incrementVisitorCount();
   }, [user?.username]);
@@ -54,37 +57,23 @@ const Dashboard = () => {
     try {
       setLoading(true);
       console.log('🔄 Starting dashboard fetch for user:', user?.username);
-      let promises = [];
 
-      // Fetch LeetCode profile if user has one
+      // Only fetch LeetCode profile - no leaderboard here
       if (user?.username) {
         console.log('🔄 Fetching LeetCode profile for:', user.username);
-        promises.push(leetcodeAPI.getProfile());
+        try {
+          const response = await leetcodeAPI.getProfile();
+          console.log('🔄 LeetCode profile response:', response);
+          console.log('🔄 Setting profile data:', response.data.profile);
+          setLeetcodeProfile(response.data.profile);
+        } catch (error) {
+          console.log('❌ LeetCode profile fetch failed:', error);
+          if (error.response?.status === 404) {
+            console.log('📝 No stored profile found - user needs to fetch data first');
+          }
+        }
       } else {
         console.log('⚠️ No username found for user');
-      }
-
-      // Fetch progress board
-      promises.push(usersAPI.getProgressBoard());
-
-      const results = await Promise.allSettled(promises);
-      
-      console.log('🔄 Dashboard fetch results:', results);
-      
-      if (user?.username && results[0]?.status === 'fulfilled') {
-        console.log('🔄 LeetCode profile response:', results[0].value);
-        console.log('🔄 Setting profile data:', results[0].value.data.profile);
-        setLeetcodeProfile(results[0].value.data.profile);
-      } else if (user?.username && results[0]?.status === 'rejected') {
-        console.log('❌ LeetCode profile fetch failed:', results[0].reason);
-        if (results[0].reason?.response?.status === 404) {
-          console.log('📝 No stored profile found - user needs to fetch data first');
-        }
-      }
-
-      const leaderboardIndex = user?.username ? 1 : 0;
-      if (results[leaderboardIndex]?.status === 'fulfilled') {
-        setLeaderboard(results[leaderboardIndex].value.data.leaderboard.slice(0, 5));
       }
     } catch (error) {
       console.error('Error fetching dashboard data:', error);
@@ -94,6 +83,23 @@ const Dashboard = () => {
       }
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchLeaderboardData = async () => {
+    try {
+      setLeaderboardLoading(true);
+      console.log('🔄 Fetching leaderboard data...');
+      
+      const response = await usersAPI.getProgressBoard();
+      setLeaderboard(response.data.leaderboard.slice(0, 5));
+      
+      console.log('✅ Leaderboard data loaded');
+    } catch (error) {
+      console.error('Error fetching leaderboard data:', error);
+      // Don't show error to user for leaderboard - it's not critical
+    } finally {
+      setLeaderboardLoading(false);
     }
   };
 
@@ -240,7 +246,23 @@ const Dashboard = () => {
             </Link>
           </div>
 
-          {leaderboard.length > 0 ? (
+          {leaderboardLoading ? (
+            <div className="space-y-3">
+              {[...Array(3)].map((_, i) => (
+                <div key={i} className="flex items-center space-x-3 animate-pulse">
+                  <div className="flex-shrink-0 h-8 w-8 bg-gray-200 rounded-full"></div>
+                  <div className="flex-1">
+                    <div className="h-4 bg-gray-200 rounded w-24 mb-1"></div>
+                    <div className="h-3 bg-gray-200 rounded w-32"></div>
+                  </div>
+                  <div className="h-4 bg-gray-200 rounded w-12"></div>
+                </div>
+              ))}
+              <div className="text-center py-2">
+                <p className="text-sm text-gray-500">Loading leaderboard...</p>
+              </div>
+            </div>
+          ) : leaderboard.length > 0 ? (
             <div className="space-y-3">
               {leaderboard.map((friend) => (
                 <div key={friend.user.id} className="flex items-center space-x-3">

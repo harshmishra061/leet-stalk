@@ -89,16 +89,12 @@ api.interceptors.response.use(
 export const authAPI = {
   login: (credentials) => api.post('/auth/login', credentials),
   register: (userData) => api.post('/auth/register', userData),
-  logout: () => api.post('/auth/logout'),
   getCurrentUser: () => api.get('/auth/me'),
   refreshToken: () => api.post('/auth/refresh'),
 };
 
 // Users API
 export const usersAPI = {
-  searchUsers: (query) => api.get(`/users/search?q=${encodeURIComponent(query)}`),
-  getUserProfile: (userId) => api.get(`/users/${userId}`),
-  updateUserProfile: (userId, data) => api.put(`/users/${userId}`, data),
   updateProfile: (data) => api.put('/auth/profile', data),
   getProgressBoard: (params = {}) => {
     const queryParams = new URLSearchParams(params).toString();
@@ -109,10 +105,6 @@ export const usersAPI = {
 // LeetCode API
 export const leetcodeAPI = {
   getProfile: (username) => api.get(`/leetcode/profile${username ? `/${username}` : ''}`),
-  fetchProfile: (username) => api.post(`/leetcode/fetch/${username}`),
-  compareProfiles: (username1, username2) => api.get(`/leetcode/compare/${username1}/${username2}`),
-  deleteProfile: () => api.delete('/leetcode/profile'),
-  getGlobalStats: () => api.get('/leetcode/stats/global'),
 };
 
 // Friends API
@@ -125,7 +117,6 @@ export const friendsAPI = {
 
 // Global Stats API
 export const globalStatsAPI = {
-  getStats: () => api.get('/global-stats'),
   incrementVisitor: () => api.post('/global-stats/visitor'),
   incrementLike: () => api.post('/global-stats/like'),
   incrementDislike: () => api.post('/global-stats/dislike'),

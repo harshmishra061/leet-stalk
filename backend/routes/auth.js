@@ -179,19 +179,6 @@ router.get('/me', authenticateToken, async (req, res) => {
   }
 });
 
-// @route   POST /api/auth/logout
-// @desc    Logout user (client-side token removal)
-// @access  Private
-router.post('/logout', authenticateToken, async (req, res) => {
-  try {
-
-    
-    res.json({ message: 'Logged out successfully' });
-  } catch (error) {
-    console.error('Logout error:', error);
-    res.status(500).json({ error: 'Server error during logout' });
-  }
-});
 
 // @route   POST /api/auth/refresh
 // @desc    Refresh JWT token using refresh token
@@ -241,42 +228,6 @@ router.post('/refresh', async (req, res) => {
   }
 });
 
-// @route   POST /api/auth/change-password
-// @desc    Change user password
-// @access  Private
-router.post('/change-password', [
-  authenticateToken,
-  body('currentPassword').notEmpty().withMessage('Current password is required'),
-  body('newPassword').isLength({ min: 6 }).withMessage('New password must be at least 6 characters long')
-], async (req, res) => {
-  try {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({
-        error: 'Validation failed',
-        details: errors.array()
-      });
-    }
-
-    const { currentPassword, newPassword } = req.body;
-    const user = await User.findById(req.user._id);
-
-    // Verify current password
-    const isCurrentPasswordValid = await user.comparePassword(currentPassword);
-    if (!isCurrentPasswordValid) {
-      return res.status(400).json({ error: 'Current password is incorrect' });
-    }
-
-    // Update password
-    user.password = newPassword;
-    await user.save();
-
-    res.json({ message: 'Password changed successfully' });
-  } catch (error) {
-    console.error('Change password error:', error);
-    res.status(500).json({ error: 'Server error changing password' });
-  }
-});
 
 // @route   PUT /api/auth/profile
 // @desc    Update current user profile
@@ -324,30 +275,6 @@ router.put('/profile', authenticateToken, async (req, res) => {
   }
 });
 
-// @route   GET /api/auth/me
-// @desc    Get current user profile
-// @access  Private
-router.get('/me', authenticateToken, async (req, res) => {
-  try {
-    const user = await User.findById(req.user._id).select('-password');
-    if (!user) {
-      return res.status(404).json({ error: 'User not found' });
-    }
-
-    res.json({
-      message: 'User profile retrieved successfully',
-      user: {
-        id: user._id,
-        username: user.username,
-        email: user.email,
-        profile: user.profile
-      }
-    });
-  } catch (error) {
-    console.error('Get user profile error:', error);
-    res.status(500).json({ error: 'Server error retrieving user profile' });
-  }
-});
 
 // Google OAuth Routes
 // @route   GET /api/auth/google
